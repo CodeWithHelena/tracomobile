@@ -1,17 +1,19 @@
-// components/ThemedInput.js
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { useColorScheme } from 'react-native';
 import { Colors } from '../constants/Colors';
 
-const ThemedInput = ({ style, placeholder, value, onChangeText, keyboardType='default', ...props }) => {
+const ThemedInput = ({ style, placeholder, value, onChangeText, keyboardType='default', error = false, ...props }) => {
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme] ?? Colors.light;
 
   return (
-    <View style={styles.wrapper }>
+    <View style={[
+      styles.wrapper,
+      error && styles.errorWrapper // Add error border style conditionally
+    ]}>
       <TextInput
-        style={[styles.input, { color: theme.text } , style]}
+        style={[styles.input, { color: theme.text }, style]}
         placeholder={placeholder}
         placeholderTextColor={theme.iconColor}
         value={value}
@@ -29,11 +31,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
     marginVertical: 8,
-    backgroundColor: '#ebeeefff'
+    backgroundColor: '#ebeeefff',
+    borderWidth: 1,
+    borderColor: 'transparent', // Default transparent border
+  },
+  errorWrapper: {
+    borderColor: '#dc3545', // Red border for errors
   },
   input: {
     fontSize: 16,
-     height: 30,
+    height: 30,
   },
 });
 

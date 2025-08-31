@@ -1,29 +1,35 @@
-// components/ThemedPasswordInput.js
-import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Pressable } from 'react-native';
+import React from 'react';
+import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { useColorScheme } from 'react-native';
 import { Colors } from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 
-const ThemedPasswordInput = ({ value, onChangeText, placeholder, style, ...props }) => {
-  const [visible, setVisible] = useState(false);
+const ThemedPasswordInput = ({ style, placeholder, value, onChangeText, error = false, ...props }) => {
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme] ?? Colors.light;
+  const [isVisible, setIsVisible] = React.useState(false);
 
   return (
-    <View style={[styles.wrapper, {  borderColor: 'rgba(0,0,0,0.04)' }]}>
+    <View style={[
+      styles.wrapper,
+      error && styles.errorWrapper // Add error border style conditionally
+    ]}>
       <TextInput
         style={[styles.input, { color: theme.text }, style]}
         placeholder={placeholder}
         placeholderTextColor={theme.iconColor}
-        secureTextEntry={!visible}
         value={value}
         onChangeText={onChangeText}
+        secureTextEntry={!isVisible}
         {...props}
       />
-      <Pressable onPress={() => setVisible(v => !v)} style={styles.icon}>
-        <Ionicons name={visible ? 'eye' : 'eye-off'} size={20} color={theme.iconColor} />
-      </Pressable>
+      <TouchableOpacity onPress={() => setIsVisible(!isVisible)} style={styles.eyeIcon}>
+        <Ionicons 
+          name={isVisible ? 'eye-off' : 'eye'} 
+          size={20} 
+          color={theme.iconColor} 
+        />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -32,21 +38,24 @@ const styles = StyleSheet.create({
   wrapper: {
     borderRadius: 14,
     paddingHorizontal: 14,
-    paddingVertical: 8,
+    paddingVertical: 12,
     marginVertical: 8,
+    backgroundColor: '#ebeeefff',
+    borderWidth: 1,
+    borderColor: 'transparent',
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ebeeefff'
-,
+  },
+  errorWrapper: {
+    borderColor: '#dc3545',
   },
   input: {
-    flex: 1,
     fontSize: 16,
-    height: 35,
+    height: 30,
+    flex: 1,
   },
-  icon: {
-    marginLeft: 8,
-    padding: 6,
+  eyeIcon: {
+    padding: 4,
   },
 });
 

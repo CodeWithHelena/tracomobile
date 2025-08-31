@@ -1,14 +1,13 @@
 import { Stack, useRouter } from 'expo-router';
 import { useEffect } from 'react';
-import { useAuth } from '../../contexts/AuthContext'; // Import your auth context
-import { View, ActivityIndicator } from 'react-native'; // For loading state
+import { useAuth } from '../../contexts/AuthContext';
+import { View, ActivityIndicator } from 'react-native';
 
 export default function DashboardLayout() {
   const router = useRouter();
-  const { user, loading } = useAuth(); // Get user and loading state from context
+  const { user, loading } = useAuth(); // This must be unconditional
 
   useEffect(() => {
-    // Only redirect if we're done loading AND there's no user
     if (!loading && !user) {
       router.replace('/(auth)/login');
     }
@@ -25,8 +24,8 @@ export default function DashboardLayout() {
 
   // Don't render the dashboard if not authenticated
   if (!user) {
-    return null; // or you could return a different component
+    return null; // This is okay because no hooks are called after this
   }
 
-  return <Stack />;
+  return <Stack />; // All hooks must be called before any conditional returns
 }

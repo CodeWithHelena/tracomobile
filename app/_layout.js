@@ -1,13 +1,12 @@
 import { Stack } from 'expo-router';
-import { AuthProvider } from '../contexts/AuthContext'; // adjust path if needed
-import { useAuth } from '../contexts/AuthContext';
-
-
-
+import { AuthProvider } from '../contexts/AuthContext';
+import { AlertProvider } from '../contexts/AlertContext';
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <Stack screenOptions={{ headerShown: false }} />
+      <AlertProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+      </AlertProvider>
     </AuthProvider>
   );
 }
