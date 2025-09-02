@@ -9,6 +9,12 @@ export default function DashboardTabBar({ state, descriptors, navigation }) {
   const colorScheme = useColorScheme();
   const themeTab = colorScheme === 'dark' ? Colors.tab.dark : Colors.tab.light;
 
+  // Hide tab bar on Add Task screen
+  const current = state.routes[state.index]?.name;
+  if (current === 'add') {
+    return null;
+  }
+
   return (
     <View style={[styles.wrapper]}>
       <View style={[

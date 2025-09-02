@@ -137,4 +137,18 @@ export const Colors = {
       border: 'rgba(58, 53, 70, 0.6)',
     }
   },
+
+  // Date and Time picker colors
+  picker: {
+    light: {
+      background: '#ffffff',
+      text: '#000000',
+      accent: '#5A3EE7',
+    },
+    dark: {
+      background: '#2a2730',
+      text: '#ffffff', 
+      accent: '#b565ff',
+    }
+  }
 };

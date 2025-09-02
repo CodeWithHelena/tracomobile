@@ -1,12 +1,244 @@
-import React from 'react';
-import { View, Text, useColorScheme } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  KeyboardAvoidingView,
+  Platform, 
+  TouchableWithoutFeedback,
+  Keyboard,
+  Pressable,
+  Text,
+  useColorScheme,
+  Modal,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+import ThemedText from '../../components/ThemedText';
+import ThemedInput from '../../components/ThemedInput';
+import ThemedButton from '../../components/ThemedButton';
+import CategoryPill from '../../components/dashboard/CategoryPill';
+
 import { Colors } from '../../constants/Colors';
+import s from '../../styles/dashboardStyles/addTask';
 
 export default function AddTask() {
-  const cs = useColorScheme(); const theme = Colors[cs] ?? Colors.light;
+  const router = useRouter();
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme] ?? Colors.light;
+  const pickerTheme = Colors.picker[colorScheme] ?? Colors.picker.light;
+
+  // form state
+  const [title, setTitle] = useState('');
+  const [category, setCategory] = useState(null);
+  const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState(new Date());
+  const [notes, setNotes] = useState('');
+
+  // pickers visibility
+  const [showDate, setShowDate] = useState(false);
+  const [showTime, setShowTime] = useState(false);
+
+  const onChangeDate = (_, selected) => {
+    setShowDate(false);
+    if (selected) setDate(selected);
+  };
+
+  const onChangeTime = (_, selected) => {
+    setShowTime(false);
+    if (selected) setTime(selected);
+  };
+
+  const save = () => {
+    router.back();
+  };
+
   return (
-    <View style={{ flex:1, backgroundColor: theme.background, alignItems:'center', justifyContent:'center' }}>
-      <Text style={{ color: theme.title, fontSize: 18 }}>Add Task</Text>
-    </View>
+    <KeyboardAvoidingView style={[s.flex1, { backgroundColor: theme.background }]} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={[s.container, { backgroundColor: theme.background }]}>
+          {/* Header with top padding */}
+          <View style={[s.header, { backgroundColor: Colors.primary }]}>
+            <Pressable onPress={() => router.back()} style={s.headerIconWrap}>
+              <Ionicons name="chevron-back" size={20} color="#fff" />
+            </Pressable>
+
+            <ThemedText title style={s.headerTitle}>Add New Task</ThemedText>
+
+            <View style={s.headerRight}>
+              <View style={[s.notify, { backgroundColor: 'rgba(255,255,255,0.18)' }]}>
+                <Ionicons name="notifications-outline" size={18} color="#fff" />
+              </View>
+            </View>
+          </View>
+
+          {/* Content */}
+          <ScrollView contentContainerStyle={s.scrollContent}>
+            <View style={[s.contentCard, { backgroundColor: theme.card }]}>
+              {/* Task Title */}
+              <ThemedText style={[s.label, { color: theme.title }]}>Task Title</ThemedText>
+              <ThemedInput
+                placeholder="Pick up Milk"
+                value={title}
+                onChangeText={setTitle}
+                style={{ borderColor: theme.inputBorder, color: theme.inputText }}
+                placeholderTextColor={theme.inputPlaceholder}
+                returnKeyType="done"
+              />
+
+              {/* Category - Fixed layout */}
+              <ThemedText style={[s.label, { color: theme.title, marginTop: 14 }]}>Category</ThemedText>
+              <View style={s.categoryGrid}>
+                <View style={s.categoryRow}>
+                  <CategoryPill
+                    label="Office Project"
+                    icon="business-outline"
+                    selected={category === 'office'}
+                    onPress={() => setCategory('office')}
+                  />
+                  <CategoryPill
+                    label="Daily Study"
+                    icon="book-outline"
+                    selected={category === 'study'}
+                    onPress={() => setCategory('study')}
+                  />                  
+                </View>
+                <View style={[s.categoryRow, s.centerRow]}>
+                  <CategoryPill
+                    label="Personal Project"
+                    icon="person-outline"
+                    selected={category === 'personal'}
+                    onPress={() => setCategory('personal')}
+                  />
+                </View>
+              </View>
+
+              {/* When: Date & Time */}
+              <View style={s.row}>
+                <View style={s.col}>
+                  <ThemedText style={[s.label, { color: theme.title }]}>Due date</ThemedText>
+                  <Pressable
+                    onPress={() => setShowDate(true)}
+                    style={[s.pickerBox, { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder }]}
+                  >
+                    <Text style={[s.pickerText, { color: theme.inputText }]}>
+                      {date.toLocaleDateString()}
+                    </Text>
+                    <Ionicons name="calendar-outline" size={18} color={theme.iconColor} />
+                  </Pressable>
+                </View>
+
+                <View style={s.col}>
+                  <ThemedText style={[s.label, { color: theme.title }]}>Time</ThemedText>
+                  <Pressable
+                    onPress={() => setShowTime(true)}
+                    style={[s.pickerBox, { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder }]}
+                  >
+                    <Text style={[s.pickerText, { color: theme.inputText }]}>
+                      {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </Text>
+                    <Ionicons name="time-outline" size={18} color={theme.iconColor} />
+                  </Pressable>
+                </View>
+              </View>
+
+              {/* Notes */}
+              <ThemedText style={[s.label, { color: theme.title }]}>Notes</ThemedText>
+              <ThemedInput
+                placeholder="Add your notes here"
+                value={notes}
+                onChangeText={setNotes}
+                multiline
+                style={[
+                  s.notesInput,
+                  { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder, color: theme.inputText },
+                ]}
+                placeholderTextColor={theme.inputPlaceholder}
+              />
+
+              {/* Save Button */}
+              <ThemedButton title="Save" onPress={save} style={s.saveBtn} />
+            </View>
+          </ScrollView>
+
+         {/* Date Picker Modal */}
+          <Modal
+            visible={showDate}
+            transparent={true}
+            animationType="fade"
+            onRequestClose={() => setShowDate(false)}
+          >
+            <TouchableOpacity 
+              style={s.modalOverlay}
+              activeOpacity={1}
+              onPress={() => setShowDate(false)}
+            >
+              <View style={[s.modalContent, { backgroundColor: pickerTheme.background }]}>
+                <DateTimePicker
+                  value={date}
+                  mode="date"
+                  display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                  onChange={onChangeDate}
+                  style={s.picker}
+                  themeVariant={colorScheme}
+                  textColor={pickerTheme.text}
+                  accentColor={pickerTheme.accent}
+                />
+                {Platform.OS === 'ios' && (
+                  <TouchableOpacity 
+                    style={s.doneButton}
+                    onPress={() => setShowDate(false)}
+                  >
+                    <Text style={[s.doneButtonText, { color: pickerTheme.accent }]}>
+                      Done
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            </TouchableOpacity>
+          </Modal>
+
+          {/* Time Picker Modal */}
+          <Modal
+            visible={showTime}
+            transparent={true}
+            animationType="fade"
+            onRequestClose={() => setShowTime(false)}
+          >
+            <TouchableOpacity 
+              style={s.modalOverlay}
+              activeOpacity={1}
+              onPress={() => setShowTime(false)}
+            >
+              <View style={[s.modalContent, { backgroundColor: pickerTheme.background }]}>
+                <DateTimePicker
+                  value={time}
+                  mode="time"
+                  is24Hour
+                  display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                  onChange={onChangeTime}
+                  style={s.picker}
+                  themeVariant={colorScheme}
+                  textColor={pickerTheme.text}
+                  accentColor={pickerTheme.accent}
+                />
+                {Platform.OS === 'ios' && (
+                  <TouchableOpacity 
+                    style={s.doneButton}
+                    onPress={() => setShowTime(false)}
+                  >
+                    <Text style={[s.doneButtonText, { color: pickerTheme.accent }]}>
+                      Done
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            </TouchableOpacity>
+          </Modal>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
