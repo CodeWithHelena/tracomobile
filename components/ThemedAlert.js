@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, TouchableOpacity, StyleSheet, useColorScheme } from 'react-native'; // Fixed import
+import { Ionicons } from '@expo/vector-icons'; // Only Ionicons from vector-icons
 import ThemedText from './ThemedText';
+import { Colors } from '../constants/Colors';
 
 const ThemedAlert = ({ 
   type = 'success', 
@@ -10,6 +11,9 @@ const ThemedAlert = ({
   onDismiss, 
   duration = 4000 
 }) => {
+  const colorScheme = useColorScheme(); // Now this will work
+  const theme = Colors[colorScheme] ?? Colors.light;
+
   React.useEffect(() => {
     if (visible && onDismiss) {
       const timer = setTimeout(onDismiss, duration);
@@ -21,28 +25,28 @@ const ThemedAlert = ({
 
   const alertConfig = {
     success: {
-      bgColor: '#d4f8e8',
-      iconColor: '#10b981',
+      bgColor: theme.alert.success.bg,
+      iconColor: theme.alert.success.icon,
       iconName: 'checkmark-circle',
-      textColor: '#065f46'
+      textColor: theme.alert.success.text
     },
     error: {
-      bgColor: '#fee2e2',
-      iconColor: '#ef4444',
+      bgColor: theme.alert.error.bg,
+      iconColor: theme.alert.error.icon,
       iconName: 'close-circle',
-      textColor: '#991b1b'
+      textColor: theme.alert.error.text
     },
     warning: {
-      bgColor: '#fef3c7',
-      iconColor: '#f59e0b',
+      bgColor: theme.alert.warning.bg,
+      iconColor: theme.alert.warning.icon,
       iconName: 'warning',
-      textColor: '#92400e'
+      textColor: theme.alert.warning.text
     },
     info: {
-      bgColor: '#dbeafe',
-      iconColor: '#3b82f6',
+      bgColor: theme.alert.info.bg,
+      iconColor: theme.alert.info.icon,
       iconName: 'information-circle',
-      textColor: '#1e40af'
+      textColor: theme.alert.info.text
     }
   };
 
@@ -56,7 +60,6 @@ const ThemedAlert = ({
       }
     ]}>
       <View style={styles.content}>
-        {/* Icon with white circle background - takes full height */}
         <View style={[styles.iconWrapper, { backgroundColor: config.iconColor }]}>
           <View style={styles.iconBackground}>
             <Ionicons 
@@ -67,7 +70,6 @@ const ThemedAlert = ({
           </View>
         </View>
         
-        {/* Message */}
         <View style={styles.textContainer}>
           <ThemedText style={[styles.message, { color: config.textColor }]}>
             {message}
@@ -75,7 +77,6 @@ const ThemedAlert = ({
         </View>
       </View>
       
-      {/* Close button */}
       {onDismiss && (
         <TouchableOpacity onPress={onDismiss} style={styles.closeButton}>
           <Ionicons 
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
     right: 20,
     borderRadius: 12,
     flexDirection: 'row',
-    alignItems: 'stretch', // Changed to stretch to allow full height
+    alignItems: 'stretch',
     justifyContent: 'space-between',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 5,
     zIndex: 1000,
-    minHeight: 60, // Ensure minimum height for proper styling
+    minHeight: 60,
   },
   content: {
     flex: 1,
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
   closeButton: {
     padding: 2,
     marginLeft: 8,
-    justifyContent: 'center', // Center close button vertically
+    justifyContent: 'center',
   },
 });
 

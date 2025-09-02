@@ -6,17 +6,22 @@ import ThemedText from '../../components/ThemedText';
 import ThemedInput from '../../components/ThemedInput';
 import ThemedPasswordInput from '../../components/ThemedPasswordInput';
 import ThemedButton from '../../components/ThemedButton';
-import SafeThemedAlert from '../../components/SafeThemedAlert';
+import SafeThemedAlert from '../../components/SafeThemedAlert';import { useColorScheme } from 'react-native';
+import { getAuthStyles } from '../../styles/authStyles';
 import InlineMessage from '../../components/InlineMessage';
 import KeyboardAvoidingContainer from '../../components/KeyboardAvoidingContainer';
 import { useAuth } from '../../contexts/AuthContext';
 import { Colors } from '../../constants/Colors';
 import { useAlert } from '../../contexts/AlertContext';
 
+
 export default function Register() {
   const router = useRouter();
   const { register, loading } = useAuth();
   const { showAlert } = useAlert();
+
+  const colorScheme = useColorScheme();
+  const authStyles = getAuthStyles(colorScheme);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -116,22 +121,22 @@ export default function Register() {
   return (
     <KeyboardAvoidingContainer style={{ flex: 1 }}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.container}>
+        <View style={authStyles.container}>
           <SafeThemedAlert />
 
-          <LinearGradient colors={[Colors.gradientStart, Colors.gradientEnd]} style={styles.header}>
-            <ThemedText title style={styles.brand}>Traco</ThemedText>
-            <View style={styles.btnLinkWrapper}>
-              <ThemedText style={styles.btnLinkText}>Already have an account?</ThemedText>
+          <LinearGradient colors={[Colors.gradientStart, Colors.gradientEnd]} style={authStyles.header}>
+            <ThemedText title style={authStyles.brand}>Traco</ThemedText>
+            <View style={authStyles.btnLinkWrapper}>
+              <ThemedText style={authStyles.btnLinkText}>Already have an account?</ThemedText>
               <TouchableOpacity onPress={() => router.push("/(auth)/login")}>
-                <ThemedText style={styles.btnLink}>Sign In</ThemedText>
+                <ThemedText style={authStyles.btnLink}>Sign In</ThemedText>
               </TouchableOpacity>
             </View>
           </LinearGradient>
 
-          <View style={styles.card}>
-            <ThemedText title style={styles.formTextTitle}>Get started free.</ThemedText>
-            <ThemedText style={styles.formTextSubTitle}>Free forever. No credit card needed.</ThemedText>
+          <View style={authStyles.card}>
+            <ThemedText title style={authStyles.formTextTitle}>Get started free.</ThemedText>
+            <ThemedText style={authStyles.formTextSubTitle}>Free forever. No credit card needed.</ThemedText>
 
             <ThemedInput 
               placeholder="Full name" 
@@ -209,61 +214,5 @@ export default function Register() {
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    backgroundColor: Colors.light.background 
-  },
-  header: { 
-    height: 270, 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    paddingTop: 40 
-  },
-  brand: { 
-    fontSize: 34, 
-    color: '#fff', 
-    fontWeight: '700' 
-  },
-  btnLinkWrapper: {
-    position: 'absolute',
-    right: 18,
-    top: 48,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  btnLink: { 
-    color: '#fff',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 10,
-  },
-  btnLinkText: {
-    color: '#c5bfbfff',
-    fontSize: 16,
-    marginRight: 8,
-  },
-  card: {
-    flex: 1,
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    padding: 20,
-    paddingTop: 45,
-    marginTop: -32,
-  },
-  formTextTitle: { 
-    fontSize: 30, 
-    fontWeight: '700', 
-    textAlign: 'center' 
-  },
-  formTextSubTitle: { 
-    marginTop: 10, 
-    marginBottom: 16, 
-    fontSize: 17, 
-    fontWeight: '500', 
-    textAlign: 'center',  
-    color: 'gray' 
-  },
+ 
 });

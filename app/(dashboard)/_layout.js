@@ -1,31 +1,40 @@
-import { Stack, useRouter } from 'expo-router';
+// app/(dashboard)/_layout.js
+import { Tabs, useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { View, ActivityIndicator } from 'react-native';
+import DashboardTabBar from '../../components/dashboard/DashboardTabBar';
 
 export default function DashboardLayout() {
   const router = useRouter();
-  const { user, loading } = useAuth(); // This must be unconditional
+  const { user, loading } = useAuth();
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.replace('/(auth)/login');
-    }
-  }, [user, loading, router]);
+    if (!loading && !user) router.replace('/(auth)/login');
+  }, [user, loading]);
 
-  // Show loading spinner while checking auth status
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
+  if (loading) return null;
+  if (!user) return null;
 
-  // Don't render the dashboard if not authenticated
-  if (!user) {
-    return null; // This is okay because no hooks are called after this
-  }
-
-  return <Stack />; // All hooks must be called before any conditional returns
+  return (
+    <Tabs
+      screenOptions={
+        { headerShown: false,
+          tabBarStyle: {
+          backgroundColor: "#F5F6FA", // your design bg color
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          height: 60,
+        }
+         }
+        
+      }
+      tabBar={(props) => <DashboardTabBar {...props} />}
+    >
+      <Tabs.Screen name="home" options={{ title: 'Home' }} />
+      <Tabs.Screen name="today" options={{ title: "Today's" }} />
+      <Tabs.Screen name="add" options={{ title: 'Add' }} />
+      <Tabs.Screen name="all" options={{ title: 'All' }} />
+      <Tabs.Screen name="settings" options={{ title: 'Settings' }} />
+    </Tabs>
+  );
 }
