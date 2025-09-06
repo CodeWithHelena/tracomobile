@@ -49,7 +49,8 @@ export default StyleSheet.create({
   contentCard: {
     marginTop: 14,
     marginHorizontal: 14,
-    padding: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 20,
     borderRadius: 14,
     // subtle card shadow
     shadowColor: '#000',
@@ -119,15 +120,18 @@ export default StyleSheet.create({
   /* Save button */
   saveBtn: {
     borderRadius: 16,
+    marginTop: 10,
   },
 
    /* Modal Styles */
+
   modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  flex: 1,
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  justifyContent: 'center',
+  alignItems: 'center',
+  position: 'relative',
+},
   modalContent: {
     backgroundColor: '#fff',
     borderRadius: 16,

@@ -16,9 +16,9 @@ export default function TaskGroupItem({
 }) {
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme] ?? Colors.light;
-  const chip = Colors.chips[chipKey];
-  const chipBg = colorScheme === 'dark' ? chip.dark : chip.light;
-  const chipIcon = chip.icon;
+  const chipColors = Colors.chips[colorScheme]?.[chipKey] ?? Colors.chips.light.office;
+  const chipBg = chipColors.bg;
+  const chipIcon = chipColors.icon;
 
   return (
     <View style={[styles.row, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>

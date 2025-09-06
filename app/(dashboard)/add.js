@@ -24,6 +24,8 @@ import CategoryPill from '../../components/dashboard/CategoryPill';
 import { Colors } from '../../constants/Colors';
 import s from '../../styles/dashboardStyles/addTask';
 
+
+
 export default function AddTask() {
   const router = useRouter();
   const colorScheme = useColorScheme();
@@ -41,6 +43,8 @@ export default function AddTask() {
   const [showDate, setShowDate] = useState(false);
   const [showTime, setShowTime] = useState(false);
 
+
+  /*
   const onChangeDate = (_, selected) => {
     setShowDate(false);
     if (selected) setDate(selected);
@@ -51,14 +55,36 @@ export default function AddTask() {
     if (selected) setTime(selected);
   };
 
+  */
+
+   const onChangeDate = (_, selected) => {
+    if (Platform.OS === "android") {
+      setShowDate(false);
+      if (selected) setDate(selected);
+    } else {
+      if (selected) setDate(selected); // don’t close on iOS scroll
+    }
+  };
+
+  const onChangeTime = (_, selected) => {
+    if (Platform.OS === "android") {
+      setShowTime(false);
+      if (selected) setTime(selected);
+    } else {
+      if (selected) setTime(selected);
+    }
+  };
+
   const save = () => {
     router.back();
   };
+  
+  const [selectedCategory, setSelectedCategory] = useState('work');
 
   return (
     <KeyboardAvoidingView style={[s.flex1, { backgroundColor: theme.background }]} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={[s.container, { backgroundColor: theme.background }]}>
+        <View style={[s.container, { backgroundColor: theme.card }]}>
           {/* Header with top padding */}
           <View style={[s.header, { backgroundColor: Colors.primary }]}>
             <Pressable onPress={() => router.back()} style={s.headerIconWrap}>
@@ -80,11 +106,11 @@ export default function AddTask() {
               {/* Task Title */}
               <ThemedText style={[s.label, { color: theme.title }]}>Task Title</ThemedText>
               <ThemedInput
-                placeholder="Pick up Milk"
+                placeholder="Add title"
                 value={title}
                 onChangeText={setTitle}
-                style={{ borderColor: theme.inputBorder, color: theme.inputText }}
                 placeholderTextColor={theme.inputPlaceholder}
+                borderColor={theme.inputBorder}
                 returnKeyType="done"
               />
 
@@ -97,20 +123,30 @@ export default function AddTask() {
                     icon="business-outline"
                     selected={category === 'office'}
                     onPress={() => setCategory('office')}
+                    chipKey="office"
                   />
                   <CategoryPill
                     label="Daily Study"
                     icon="book-outline"
                     selected={category === 'study'}
                     onPress={() => setCategory('study')}
+                    chipKey="study"
                   />                  
                 </View>
                 <View style={[s.categoryRow, s.centerRow]}>
+                  <CategoryPill
+                    label="Health"
+                    icon="fitness-outline"
+                    selected={selectedCategory === 'health'}
+                    onPress={() => setSelectedCategory('health')}
+                    chipKey="health" // Uses health colors (if defined)
+                  />
                   <CategoryPill
                     label="Personal Project"
                     icon="person-outline"
                     selected={category === 'personal'}
                     onPress={() => setCategory('personal')}
+                    chipKey="personal"
                   />
                 </View>
               </View>
@@ -145,16 +181,14 @@ export default function AddTask() {
               </View>
 
               {/* Notes */}
-              <ThemedText style={[s.label, { color: theme.title }]}>Notes</ThemedText>
+              <ThemedText style={[s.label, { color: theme.title }]}>Description</ThemedText>
               <ThemedInput
                 placeholder="Add your notes here"
                 value={notes}
                 onChangeText={setNotes}
                 multiline
-                style={[
-                  s.notesInput,
-                  { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder, color: theme.inputText },
-                ]}
+                borderColor={theme.inputBorder}
+                style={{height: 110}}
                 placeholderTextColor={theme.inputPlaceholder}
               />
 

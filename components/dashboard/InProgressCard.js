@@ -17,10 +17,13 @@ export default function InProgressCard({
   const theme = Colors[colorScheme] ?? Colors.light;
 
   // chip color
-  const chipMap = Colors.chips[label.toLowerCase().includes('office') ? 'office' :
-                  label.toLowerCase().includes('personal') ? 'personal' : 'study'];
-  const chipBg = colorScheme === 'dark' ? chipMap.dark : chipMap.light;
-  const chipIcon = chipMap.icon;
+  let groupKey = 'study'; // default
+  if (label.toLowerCase().includes('office')) groupKey = 'office';
+  else if (label.toLowerCase().includes('personal')) groupKey = 'personal';
+
+  const chipColors = Colors.chips[colorScheme][groupKey];
+  const chipBg = chipColors.bg;
+  const chipIcon = chipColors.icon;
 
   return (
     <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
