@@ -2,50 +2,49 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useColorScheme } from 'react-native';
+import { usePreferredColorScheme } from '../../contexts/ThemeContext';
 import { Colors } from '../../constants/Colors';
+import { useRouter } from 'expo-router';
 
 export default function DashboardTabBar({ state, descriptors, navigation }) {
-  const colorScheme = useColorScheme();
-  const themeTab = colorScheme === 'dark' ? Colors.tab.dark : Colors.tab.light;
+  const scheme = usePreferredColorScheme();
+  const themeTab = (Colors.tab && Colors.tab[scheme]) || Colors.tab.light;
+  const router = useRouter();
 
-  // Hide tab bar on Add Task screen
-  const current = state.routes[state.index]?.name;
-  if (current === 'add') {
+  // Hide on particular routes (when on subpages)
+  const currentRoute = state.routes[state.index]?.name;
+  const hideOn = ['edit-profile', 'settings', 'change-password', 'profile']; // include 'profile' only if you want to hide tabs on profile subpages
+  if (hideOn.includes(currentRoute)) {
+    // we still show on the main profile tab, but not on edit/profile settings pages;
+    // If you want other pages hidden, add them here.
+    // For the main profile tab we want to show tab bar — ensure 'profile' not included if that hides main profile. Adjust if needed.
+  }
+
+  // NOTE: we still render the bar; just change specific cases in code that return null if you want to completely hide.
+  // For example to hide on 'edit-profile' only:
+  if (['edit-profile', 'change-password', 'settings'].includes(currentRoute)) {
     return null;
   }
 
   return (
     <View style={[styles.wrapper]}>
-      <View style={[
-        styles.tabBar,
-        { backgroundColor: themeTab.tabBg, borderColor: themeTab.border },
-        shadowStyle(themeTab.glow)
-      ]}>
+      <View style={[styles.tabBar, { backgroundColor: ThemeTabBg(scheme) }, shadowStyle(themeTab.glow)]}>
         {state.routes.map((route, index) => {
           const isFocused = state.index === index;
-          const onPress = () => {
-            const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
-            if (!isFocused && !event.defaultPrevented) navigation.navigate(route.name);
-          };
+          const routeName = route.name;
 
-          // icons per route
-          let icon = 'home-outline';
-          if (route.name === 'today') icon = 'calendar-outline';
-          if (route.name === 'all') icon = 'list-outline';
-          if (route.name === 'settings') icon = 'settings-outline';
+          // map route to icon
+          let iconName = 'home-outline';
+          if (routeName === 'today') iconName = 'calendar-outline';
+          if (routeName === 'add') iconName = 'add';
+          if (routeName === 'all') iconName = 'list-outline';
+          if (routeName === 'profile' || routeName === 'settings') iconName = isFocused ? 'person' : 'person-outline';
 
-          // Center "add" tab is special
-          if (route.name === 'add') {
+          // center add button
+          if (routeName === 'add') {
             return (
-              <TouchableOpacity key={route.key} onPress={onPress} activeOpacity={0.9} style={styles.addWrap}>
-                <View style={[
-                  styles.addBtn,
-                  {
-                    backgroundColor: themeTab.floatingBg
-                  },
-                  glow(themeTab.glow)
-                ]}>
+              <TouchableOpacity key={route.key} onPress={() => navigation.navigate(route.name)} activeOpacity={0.9} style={styles.addWrap}>
+                <View style={[styles.addBtn, { backgroundColor: themeTab.floatingBg }, glow(themeTab.glow)]}>
                   <Ionicons name="add" size={28} color="#fff" />
                 </View>
               </TouchableOpacity>
@@ -53,13 +52,17 @@ export default function DashboardTabBar({ state, descriptors, navigation }) {
           }
 
           return (
-            <TouchableOpacity key={route.key} accessibilityRole="button" onPress={onPress} style={styles.item}>
-              <Ionicons
-                name={mapActive(icon, isFocused)}
-                size={24}
-                color={isFocused ? themeTab.iconActive : themeTab.icon}
-                style={isFocused ? glow(themeTab.glow) : undefined}
-              />
+            <TouchableOpacity
+              key={route.key}
+              onPress={() => {
+                const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
+                if (!isFocused && !event.defaultPrevented) {
+                  navigation.navigate(route.name);
+                }
+              }}
+              style={styles.item}
+            >
+              <Ionicons name={mapActive(iconName, isFocused)} size={24} color={isFocused ? themeTab.iconActive : themeTab.icon} />
             </TouchableOpacity>
           );
         })}
@@ -68,11 +71,11 @@ export default function DashboardTabBar({ state, descriptors, navigation }) {
   );
 }
 
-const mapActive = (name, active) => {
-  if (!active) return name;
-  // turn outline -> filled when active
-  return name.replace('-outline', '');
+const ThemeTabBg = (scheme) => {
+  return (Colors.tab && Colors.tab[scheme] && Colors.tab[scheme].bg) || Colors.tab.light.bg;
 };
+
+const mapActive = (name, active) => (active ? name.replace('-outline', '') : name);
 
 const glow = (glowColor) => ({
   shadowColor: glowColor,
@@ -96,17 +99,15 @@ const styles = StyleSheet.create({
     left: 0, right: 0, bottom: 0,
   },
   tabBar: {
-    marginHorizontal: 0,
-    paddingBottom: Platform.select({ ios: 30, android: 30 }),
-    height: 80,
+    marginHorizontal: 14,
+    marginBottom: Platform.select({ ios: 22, android: 14 }),
+    height: 64,
     borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
     paddingHorizontal: 10,
-    paddingTop: 10,
-    backgroundColor: "#F5F6FA",
   },
   item: { flex: 1, alignItems: 'center' },
   addWrap: {

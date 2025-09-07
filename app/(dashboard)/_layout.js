@@ -34,7 +34,7 @@ export default function DashboardLayout() {
       <Tabs.Screen name="today" options={{ title: "Today's" }} />
       <Tabs.Screen name="add" options={{ title: 'Add' }} />
       <Tabs.Screen name="all" options={{ title: 'All' }} />
-      <Tabs.Screen name="settings" options={{ title: 'Settings' }} />
+      <Tabs.Screen name="profile" options={{ title: 'profile' }} />
     </Tabs>
   );
 }

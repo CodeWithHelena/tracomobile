@@ -1,12 +1,15 @@
-import { Stack } from 'expo-router';
+// app/_layout.js
+import React from 'react';
+import { Slot } from 'expo-router';
 import { AuthProvider } from '../contexts/AuthContext';
-import { AlertProvider } from '../contexts/AlertContext';
+import { ThemeProvider } from '../contexts/ThemeContext';
+
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <AlertProvider>
-        <Stack screenOptions={{ headerShown: false }} />
-      </AlertProvider>
+      <ThemeProvider>
+        <Slot />
+      </ThemeProvider>
     </AuthProvider>
   );
 }
