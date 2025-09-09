@@ -1,8 +1,6 @@
-// app/(dashboard)/_layout.js
-import { Tabs, useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import DashboardTabBar from '../../components/dashboard/DashboardTabBar';
 
 export default function DashboardLayout() {
   const router = useRouter();
@@ -16,25 +14,43 @@ export default function DashboardLayout() {
   if (!user) return null;
 
   return (
-    <Tabs
-      screenOptions={
-        { headerShown: false,
-          tabBarStyle: {
-          backgroundColor: "#F5F6FA", // your design bg color
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          height: 60,
-        }
-         }
-        
-      }
-      tabBar={(props) => <DashboardTabBar {...props} />}
-    >
-      <Tabs.Screen name="home" options={{ title: 'Home' }} />
-      <Tabs.Screen name="today" options={{ title: "Today's" }} />
-      <Tabs.Screen name="add" options={{ title: 'Add' }} />
-      <Tabs.Screen name="all" options={{ title: 'All' }} />
-      <Tabs.Screen name="profile" options={{ title: 'profile' }} />
-    </Tabs>
+    <Stack screenOptions={{ headerShown: false }}>
+      {/* Main tabs */}
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      
+      {/* All subpages - NO modal presentation */}
+      <Stack.Screen 
+        name="edit-profile" 
+        options={{ 
+          title: 'Edit Profile',
+          gestureEnabled: true,
+          fullScreenGestureEnabled: true,
+        }} 
+      />
+      <Stack.Screen 
+        name="settings" 
+        options={{ 
+          title: 'Settings',
+          gestureEnabled: true,
+          fullScreenGestureEnabled: true,
+        }} 
+      />
+      <Stack.Screen 
+        name="my-favourites" 
+        options={{ 
+          title: 'My Favourites',
+          gestureEnabled: true,
+          fullScreenGestureEnabled: true,
+        }} 
+      />
+      <Stack.Screen 
+        name="my-history" 
+        options={{ 
+          title: 'My History',
+          gestureEnabled: true,
+          fullScreenGestureEnabled: true,
+        }} 
+      />
+    </Stack>
   );
 }

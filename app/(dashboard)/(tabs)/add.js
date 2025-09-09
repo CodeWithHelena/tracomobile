@@ -16,13 +16,14 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-import ThemedText from '../../components/ThemedText';
-import ThemedInput from '../../components/ThemedInput';
-import ThemedButton from '../../components/ThemedButton';
-import CategoryPill from '../../components/dashboard/CategoryPill';
+import ThemedText from '../../../components/ThemedText';
+import ThemedInput from '../../../components/ThemedInput';
+import ThemedButton from '../../../components/ThemedButton';
+import CategoryPill from '../../../components/dashboard/CategoryPill';
+import PageHeader from '../../../components/dashboard/PageHeader';
 
-import { Colors } from '../../constants/Colors';
-import s from '../../styles/dashboardStyles/addTask';
+import { Colors } from '../../../constants/Colors';
+import s from '../../../styles/dashboardStyles/addTask';
 
 
 
@@ -85,20 +86,7 @@ export default function AddTask() {
     <KeyboardAvoidingView style={[s.flex1, { backgroundColor: theme.background }]} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={[s.container, { backgroundColor: theme.card }]}>
-          {/* Header with top padding */}
-          <View style={[s.header, { backgroundColor: Colors.primary }]}>
-            <Pressable onPress={() => router.back()} style={s.headerIconWrap}>
-              <Ionicons name="chevron-back" size={20} color="#fff" />
-            </Pressable>
-
-            <ThemedText title style={s.headerTitle}>Add New Task</ThemedText>
-
-            <View style={s.headerRight}>
-              <View style={[s.notify, { backgroundColor: 'rgba(255,255,255,0.18)' }]}>
-                <Ionicons name="notifications-outline" size={18} color="#fff" />
-              </View>
-            </View>
-          </View>
+          <PageHeader title="Add New Task" />
 
           {/* Content */}
           <ScrollView contentContainerStyle={s.scrollContent}>

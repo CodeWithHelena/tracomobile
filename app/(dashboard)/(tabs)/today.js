@@ -11,18 +11,18 @@ import {
   StyleSheet
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Colors } from '../../constants/Colors';
+import { Colors } from '../../../constants/Colors';
 
-import ThemedText from '../../components/ThemedText';
-import ThemedButton from '../../components/ThemedButton';
+import ThemedText from '../../../components/ThemedText';
+import ThemedButton from '../../../components/ThemedButton';
 
-import CalendarModal from '../../components/CalendarModal';
-import DateCarousel from '../../components/dashboard/DateCarousel';
-import FilterTabs from '../../components/dashboard/FilterTabs';
-import TaskCard from '../../components/dashboard/TaskCard';
-import PlainButton from '../../components/PlainButton';
+import CalendarModal from '../../../components/CalendarModal';
+import DateCarousel from '../../../components/dashboard/DateCarousel';
+import FilterTabs from '../../../components/dashboard/FilterTabs';
+import TaskCard from '../../../components/dashboard/TaskCard';
+import PlainButton from '../../../components/PlainButton';
 
-import s from '../../styles/dashboardStyles/todayTasks';
+import s from '../../../styles/dashboardStyles/todayTasks';
 
 export default function TodayScreen() {
   const scheme = useColorScheme();

@@ -3,11 +3,11 @@ import { View, Text, ScrollView, TouchableOpacity, useColorScheme, FlatList } fr
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons, Feather } from '@expo/vector-icons';
-import { Colors } from '../../constants/Colors';
-import styles from '../../styles/dashboardStyles/home';
-import ProfileAvatar from '../../components/dashboard/ProfileAvatar';
-import InProgressCard from '../../components/dashboard/InProgressCard';
-import CircularProgress from '../../components/dashboard/CircularProgress';
+import { Colors } from '../../../constants/Colors';
+import styles from '../../../styles/dashboardStyles/home';
+import ProfileAvatar from '../../../components/dashboard/ProfileAvatar';
+import InProgressCard from '../../../components/dashboard/InProgressCard';
+import CircularProgress from '../../../components/dashboard/CircularProgress';
 
 export default function Home() {
   const colorScheme = useColorScheme();
@@ -166,6 +166,6 @@ export default function Home() {
 
 // small wrapper to keep imports tidy
 function TaskGroup(props) {
-  const TaskGroupItem = require('../../components/dashboard/TaskGroupItem').default;
+  const TaskGroupItem = require('../../../components/dashboard/TaskGroupItem').default;
   return <TaskGroupItem {...props} />;
 }

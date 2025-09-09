@@ -1,17 +1,12 @@
-// app/(dashboard)/edit-profile.js
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   View,
-  SafeAreaView,
-  Text,
   TouchableOpacity,
-  Image,
   Platform,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-  PanResponder,
-  Animated,
+  ScrollView,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
@@ -22,6 +17,7 @@ import ProfileAvatar from '../../components/dashboard/ProfileAvatar';
 import ThemedInput from '../../components/ThemedInput';
 import ThemedButton from '../../components/ThemedButton';
 import ThemedText from '../../components/ThemedText';
+import PageHeader from '../../components/dashboard/PageHeader';
 import s from '../../styles/dashboardStyles/profile';
 
 export default function EditProfile() {
@@ -35,45 +31,34 @@ export default function EditProfile() {
   const [dob, setDob] = useState('');
   const [picture, setPicture] = useState(null);
 
-  const pan = useRef(new Animated.Value(0)).current;
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: (_, g) => Math.abs(g.dx) > Math.abs(g.dy) && g.dx > 10,
-      onPanResponderMove: Animated.event([null, { dx: pan }], { useNativeDriver: false }),
-      onPanResponderRelease: (_, g) => {
-        if (g.dx > 80) {
-          router.back();
-        } else {
-          Animated.spring(pan, { toValue: 0, useNativeDriver: false }).start();
-        }
-      },
-    }),
-  ).current;
-
   const pickImage = async () => {
     const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!perm.granted) return alert('Permission required to select image');
-    const res = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, quality: 0.7 });
-    if (!res.cancelled) setPicture(res.uri);
+    const res = await ImagePicker.launchImageLibraryAsync({ 
+      mediaTypes: ImagePicker.MediaTypeOptions.Images, 
+      quality: 0.7 
+    });
+    if (!res.canceled) setPicture(res.assets[0].uri);
   };
 
   return (
-    <SafeAreaView style={[s.safe, { backgroundColor: theme.background }]}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: theme.background }}>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+        style={{ flex: 1 }}
+      >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <Animated.View style={{ flex: 1, transform: [{ translateX: pan }] }} {...panResponder.panHandlers}>
-            {/* Header with centered title and back arrow */}
-            <View style={[s.subHeader, { backgroundColor: Colors.gradientStart, paddingTop: Platform.OS === 'ios' ? 12 : 10 }]}>
-              <TouchableOpacity onPress={() => router.back()} style={s.backWrap}>
-                <Ionicons name="chevron-back" size={22} color="#fff" />
-              </TouchableOpacity>
-              <ThemedText title style={s.subHeaderTitle}>Edit Profile</ThemedText>
-              <View style={{ width: 44 }} />{/* placeholder to center title */}
-            </View>
-
-            <View style={s.content}>
-              <View style={{ alignItems: 'center', marginTop: 16 }}>
+          <View style={{ flex: 1 }}>
+            {/* Use the new header component - it will handle status bar */}
+            <PageHeader title="Edit Profile" />
+            
+            <ScrollView 
+              contentContainerStyle={[s.content, { paddingBottom: 40 }]}
+              showsVerticalScrollIndicator={false}
+              // Add padding to account for header height
+              style={{ marginTop: -20 }} // Adjust this value as needed
+            >
+              <View style={{ alignItems: 'center', marginTop: 36 }}>
                 <TouchableOpacity onPress={pickImage}>
                   <View style={{ position: 'relative' }}>
                     <ProfileAvatar size={96} uri={picture} />
@@ -84,27 +69,57 @@ export default function EditProfile() {
                 </TouchableOpacity>
               </View>
 
-              <View style={{ marginTop: 18 }}>
+              <View style={{ marginTop: 24 }}>
                 <ThemedText style={s.fieldLabel}>Full name</ThemedText>
-                <ThemedInput value={name} onChangeText={setName} placeholder="Full name" />
+                <ThemedInput 
+                  value={name} 
+                  onChangeText={setName} 
+                  placeholder="Full name" 
+                  placeholderTextColor={theme.inputPlaceholder}
+                borderColor={theme.inputBorder}
+                />
 
                 <ThemedText style={[s.fieldLabel, { marginTop: 12 }]}>Email</ThemedText>
-                <ThemedInput value={email} onChangeText={setEmail} placeholder="Email" keyboardType="email-address" />
+                <ThemedInput 
+                  value={email} 
+                  onChangeText={setEmail} 
+                  placeholder="Email" 
+                  placeholderTextColor={theme.inputPlaceholder}
+                borderColor={theme.inputBorder}
+                  keyboardType="email-address" 
+                />
+                
 
                 <ThemedText style={[s.fieldLabel, { marginTop: 12 }]}>Date of birth</ThemedText>
-                <ThemedInput value={dob} onChangeText={setDob} placeholder="DD / MM / YYYY" />
+                <ThemedInput 
+                  value={dob} 
+                  onChangeText={setDob} 
+                  placeholder="DD / MM / YYYY" 
+                  placeholderTextColor={theme.inputPlaceholder}
+                borderColor={theme.inputBorder}
+                />
 
                 <ThemedText style={[s.fieldLabel, { marginTop: 12 }]}>Phone</ThemedText>
-                <ThemedInput value={phone} onChangeText={setPhone} placeholder="+234 800 000 0000" />
+                <ThemedInput 
+                  value={phone} 
+                  onChangeText={setPhone} 
+                  placeholder="+234 800 000 0000" 
+                  keyboardType="phone-pad"
+                  placeholderTextColor={theme.inputPlaceholder}
+                borderColor={theme.inputBorder}
+                />
               </View>
 
-              <View style={{ marginTop: 22 }}>
-                <ThemedButton title="Update Profile" onPress={() => alert('Updated (stub)')} />
+              <View style={{ marginTop: 32 }}>
+                <ThemedButton 
+                  title="Update Profile" 
+                  onPress={() => alert('Updated (stub)')} 
+                />
               </View>
-            </View>
-          </Animated.View>
+            </ScrollView>
+          </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }

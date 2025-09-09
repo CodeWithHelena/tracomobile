@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, useColorScheme } from 'react-native';
-import { Colors } from '../../constants/Colors';
+import { Colors } from '../../../constants/Colors';
 
 export default function AllTasks() {
   const cs = useColorScheme(); const theme = Colors[cs] ?? Colors.light;

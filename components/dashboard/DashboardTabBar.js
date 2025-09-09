@@ -9,22 +9,9 @@ import { useRouter } from 'expo-router';
 export default function DashboardTabBar({ state, descriptors, navigation }) {
   const scheme = usePreferredColorScheme();
   const themeTab = (Colors.tab && Colors.tab[scheme]) || Colors.tab.light;
-  const router = useRouter();
 
-  // Hide on particular routes (when on subpages)
-  const currentRoute = state.routes[state.index]?.name;
-  const hideOn = ['edit-profile', 'settings', 'change-password', 'profile']; // include 'profile' only if you want to hide tabs on profile subpages
-  if (hideOn.includes(currentRoute)) {
-    // we still show on the main profile tab, but not on edit/profile settings pages;
-    // If you want other pages hidden, add them here.
-    // For the main profile tab we want to show tab bar — ensure 'profile' not included if that hides main profile. Adjust if needed.
-  }
-
-  // NOTE: we still render the bar; just change specific cases in code that return null if you want to completely hide.
-  // For example to hide on 'edit-profile' only:
-  if (['edit-profile', 'change-password', 'settings'].includes(currentRoute)) {
-    return null;
-  }
+  // No need to hide manually anymore - Stack handles it automatically
+  // The tab bar will only show when we're in the (tabs) group
 
   return (
     <View style={[styles.wrapper]}>
@@ -33,14 +20,12 @@ export default function DashboardTabBar({ state, descriptors, navigation }) {
           const isFocused = state.index === index;
           const routeName = route.name;
 
-          // map route to icon
           let iconName = 'home-outline';
           if (routeName === 'today') iconName = 'calendar-outline';
           if (routeName === 'add') iconName = 'add';
           if (routeName === 'all') iconName = 'list-outline';
-          if (routeName === 'profile' || routeName === 'settings') iconName = isFocused ? 'person' : 'person-outline';
+          if (routeName === 'profile') iconName = isFocused ? 'person' : 'person-outline';
 
-          // center add button
           if (routeName === 'add') {
             return (
               <TouchableOpacity key={route.key} onPress={() => navigation.navigate(route.name)} activeOpacity={0.9} style={styles.addWrap}>
@@ -70,6 +55,8 @@ export default function DashboardTabBar({ state, descriptors, navigation }) {
     </View>
   );
 }
+
+// ... rest of the component remains the same ...
 
 const ThemeTabBg = (scheme) => {
   return (Colors.tab && Colors.tab[scheme] && Colors.tab[scheme].bg) || Colors.tab.light.bg;

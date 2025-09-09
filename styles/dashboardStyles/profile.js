@@ -7,6 +7,11 @@ export default StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 32,
   },
+  content: {
+  paddingHorizontal: 16,
+  flexGrow: 1,
+  paddingTop: 20, // Adjust this based on your header height
+},
   topLeft: { marginTop: 8, marginBottom: 6 },
   profileTitle: { fontSize: 22, fontWeight: '800' },
 
@@ -20,23 +25,24 @@ export default StyleSheet.create({
   card: {
     borderRadius: 14,
     padding: 12,
+    marginTop: 30,
     backgroundColor: '#fff',
     shadowColor: '#000',
-    shadowOpacity: 0.04,
+    
     shadowOffset: { width: 0, height: 6 },
     shadowRadius: 12,
     elevation: 2,
   },
 
   menuItem: {
-    paddingVertical: 14,
+    paddingVertical: 18,
     paddingHorizontal: 4,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   menuLeft: { flexDirection: 'row', alignItems: 'center' },
-  menuText: { fontSize: 15, fontWeight: '700' },
+  menuText: { fontSize: 16, fontWeight: '700' },
 
   divider: {
     height: 1,
