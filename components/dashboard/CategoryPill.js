@@ -1,4 +1,3 @@
-// components/dashboard/CategoryPill.js
 import React from 'react';
 import { Pressable, View, Text, useColorScheme } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -12,18 +11,30 @@ export default function CategoryPill({
   chipKey = 'default'
 }) {
   const scheme = useColorScheme();
+  
+  // Get the chip colors based on chipKey and color scheme for UNSELECTED state
+  const chipColors = Colors.chips[scheme]?.[chipKey] || Colors.chips.light.default;
+  
+  // Get theme colors
   const theme = Colors[scheme] ?? Colors.light;
-  
-  // Safely get chip colors based on chipKey
-  const chip = Colors.chips[chipKey] || Colors.chips.default;
-  const chipIcon = chip?.icon || theme.iconColor;
 
-  const bg = selected ? Colors.primary : theme.inputBackground;
-  const border = selected ? 'transparent' : theme.inputBorder;
-  const text = selected ? '#fff' : theme.inputText;
-  
-  // Use chip icon color instead of theme iconColor
-  const iconColor = selected ? '#fff' : chipIcon;
+  // Colors for SELECTED state (keep your original styling)
+  const selectedBg = Colors.primary; // Purple background
+  const selectedText = '#fff'; // White text
+  const selectedIcon = '#fff'; // White icon
+  const selectedBorder = 'transparent'; // No border when selected
+
+  // Colors for UNSELECTED state - use chip colors for icon only
+  const unselectedBg = theme.inputBackground;
+  const unselectedText = theme.inputText;
+  const unselectedIcon = chipColors.icon; // Use the chip's icon color from Colors.js
+  const unselectedBorder = theme.inputBorder;
+
+  // Apply colors based on selection state
+  const bg = selected ? selectedBg : unselectedBg;
+  const textColor = selected ? selectedText : unselectedText;
+  const iconColor = selected ? selectedIcon : unselectedIcon; // This is the key fix!
+  const borderColor = selected ? selectedBorder : unselectedBorder;
 
   return (
     <Pressable
@@ -36,8 +47,8 @@ export default function CategoryPill({
         borderRadius: 12, 
         backgroundColor: bg,
         borderWidth: 1,
-        borderColor: border,
-        marginVertical: 6, // Changed from 4 to 6 to match container negative margin
+        borderColor: borderColor,
+        marginVertical: 6,
         alignSelf: 'flex-start',
         minHeight: 44,
         opacity: pressed ? 0.8 : 1,
@@ -52,21 +63,20 @@ export default function CategoryPill({
           justifyContent: 'center',
           backgroundColor: selected ? 'rgba(255,255,255,0.18)' : 'rgba(0,0,0,0.05)',
           marginRight: 10,
-          flexShrink: 0, // Prevent icon from shrinking
+          flexShrink: 0,
         }}
       >
         <Ionicons name={icon} size={16} color={iconColor} />
       </View>
       <Text 
         style={{ 
-          color: text, 
+          color: textColor, 
           fontWeight: '700', 
           fontSize: 14,
-          flexShrink: 1, // Allow text to shrink if needed
-          flexWrap: 'nowrap', // Prevent text from wrapping
+          flexShrink: 1,
         }}
-        numberOfLines={1} // Ensure single line
-        ellipsizeMode="tail" // Add "..." if text is too long
+        numberOfLines={1}
+        ellipsizeMode="tail"
       >
         {label}
       </Text>

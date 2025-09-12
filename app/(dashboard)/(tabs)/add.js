@@ -13,6 +13,8 @@ import {
   ScrollView,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useCallback } from 'react';
+import { PanResponder } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -44,7 +46,20 @@ export default function AddTask() {
   const [showDate, setShowDate] = useState(false);
   const [showTime, setShowTime] = useState(false);
 
-
+const panResponder = useCallback(
+  PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: (_, gestureState) => {
+      return gestureState.dx > 50 && Math.abs(gestureState.dy) < Math.abs(gestureState.dx);
+    },
+    onPanResponderRelease: (_, gestureState) => {
+      if (gestureState.dx > 100) {
+        router.back();
+      }
+    },
+  }),
+  []
+);
   /*
   const onChangeDate = (_, selected) => {
     setShowDate(false);
@@ -85,7 +100,7 @@ export default function AddTask() {
   return (
     <KeyboardAvoidingView style={[s.flex1, { backgroundColor: theme.background }]} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={[s.container, { backgroundColor: theme.card }]}>
+        <View style={[s.container, { backgroundColor: theme.card }]} {...panResponder.panHandlers}>
           <PageHeader title="Add New Task" />
 
           {/* Content */}
@@ -104,40 +119,42 @@ export default function AddTask() {
 
               {/* Category - Fixed layout */}
               <ThemedText style={[s.label, { color: theme.title, marginTop: 14 }]}>Category</ThemedText>
-              <View style={s.categoryGrid}>
-                <View style={s.categoryRow}>
-                  <CategoryPill
-                    label="Office Project"
-                    icon="business-outline"
-                    selected={category === 'office'}
-                    onPress={() => setCategory('office')}
-                    chipKey="office"
-                  />
-                  <CategoryPill
-                    label="Daily Study"
-                    icon="book-outline"
-                    selected={category === 'study'}
-                    onPress={() => setCategory('study')}
-                    chipKey="study"
-                  />                  
-                </View>
-                <View style={[s.categoryRow, s.centerRow]}>
-                  <CategoryPill
-                    label="Health"
-                    icon="fitness-outline"
-                    selected={selectedCategory === 'health'}
-                    onPress={() => setSelectedCategory('health')}
-                    chipKey="health" // Uses health colors (if defined)
-                  />
-                  <CategoryPill
-                    label="Personal Project"
-                    icon="person-outline"
-                    selected={category === 'personal'}
-                    onPress={() => setCategory('personal')}
-                    chipKey="personal"
-                  />
-                </View>
+
+            {/* In your category grid section */}
+            <View style={s.categoryGrid}>
+              <View style={s.categoryRow}>
+                <CategoryPill
+                  label="Office Project"
+                  icon="business-outline"
+                  selected={category === 'office'}
+                  onPress={() => setCategory('office')}
+                  chipKey="office"
+                />
+                <CategoryPill
+                  label="Daily Study"
+                  icon="book-outline"
+                  selected={category === 'study'}
+                  onPress={() => setCategory('study')}
+                  chipKey="study"
+                />                  
               </View>
+              <View style={[s.categoryRow, s.centerRow]}>
+                <CategoryPill
+                  label="Health"
+                  icon="fitness-outline"
+                  selected={category === 'health'}
+                  onPress={() => setCategory('health')}
+                  chipKey="health"
+                />
+                <CategoryPill
+                  label="Personal Project"
+                  icon="person-outline"
+                  selected={category === 'personal'}
+                  onPress={() => setCategory('personal')}
+                  chipKey="personal"
+                />
+              </View>
+            </View>
 
               {/* When: Date & Time */}
               <View style={s.row}>

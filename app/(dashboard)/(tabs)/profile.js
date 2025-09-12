@@ -36,7 +36,7 @@ export default function Profile() {
         <View style={s.headerCard}>
           <ProfileAvatar size={64} />
           <View style={{ marginLeft: 12 }}>
-            <ThemedText title style={{ fontSize: 18 }}>Johan Hjort</ThemedText>
+            <ThemedText title style={{ fontSize: 18, fontWeight: 'bold' }}>Johan Hjort</ThemedText>
             <ThemedText style={{ marginTop: 4 }}>Product Designer</ThemedText>
           </View>
         </View>
@@ -44,14 +44,12 @@ export default function Profile() {
         {/* Quick Actions (card) */}
         <View style={s.card}>
           <MenuItem 
-            icon="person" 
+            icon="create-outline" 
             title="Edit Profile" 
             onPress={() => router.push('/edit-profile')} 
           />
           <View style={s.divider} />
           <MenuItem icon="wallet-outline" title="Upgrade to Pro" onPress={() => {}} />
-          <View style={s.divider} />
-          <MenuItem icon="reload-outline" title="Restore Purchase" onPress={() => {}} />
         </View>
 
         
@@ -66,7 +64,7 @@ export default function Profile() {
           <View style={s.divider} />
           <MenuItem icon="time-outline" title="My history" onPress={() => {}} />
           <View style={s.divider} />
-          <MenuItem icon="person-circle-outline" title="Edit profile" onPress={() => router.push('/(dashboard)/edit-profile')} />
+          <MenuItem icon="create-outline"  title="Edit profile" onPress={() => router.push('/(dashboard)/edit-profile')} />
           <View style={s.divider} />
           <MenuItem 
             icon="settings-outline" 

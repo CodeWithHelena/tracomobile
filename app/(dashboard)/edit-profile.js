@@ -42,84 +42,79 @@ export default function EditProfile() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.background }}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
-        style={{ flex: 1 }}
+    <View style={{ flex: 1, backgroundColor: theme.card }}>
+      {/* Header */}
+      <PageHeader title="Edit Profile" />
+      
+     
+      <ScrollView 
+        contentContainerStyle={[
+          s.contentCard, 
+          { 
+            paddingBottom: 40,
+            backgroundColor: theme.card
+          }
+        ]}
+        showsVerticalScrollIndicator={false}
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={{ flex: 1 }}>
-            {/* Use the new header component - it will handle status bar */}
-            <PageHeader title="Edit Profile" />
-            
-            <ScrollView 
-              contentContainerStyle={[s.content, { paddingBottom: 40 }]}
-              showsVerticalScrollIndicator={false}
-              // Add padding to account for header height
-              style={{ marginTop: -20 }} // Adjust this value as needed
-            >
-              <View style={{ alignItems: 'center', marginTop: 36 }}>
-                <TouchableOpacity onPress={pickImage}>
-                  <View style={{ position: 'relative' }}>
-                    <ProfileAvatar size={96} uri={picture} />
-                    <View style={s.cameraBadge}>
-                      <Ionicons name="camera" size={16} color="#fff" />
-                    </View>
-                  </View>
-                </TouchableOpacity>
+        <View style={{ alignItems: 'center', marginTop: 16 }}>
+          <TouchableOpacity onPress={pickImage}>
+            <View style={{ position: 'relative' }}>
+              <ProfileAvatar size={96} uri={picture} />
+              <View style={s.cameraBadge}>
+                <Ionicons name="camera" size={16} color="#fff" />
               </View>
+            </View>
+          </TouchableOpacity>
+        </View>
 
-              <View style={{ marginTop: 24 }}>
-                <ThemedText style={s.fieldLabel}>Full name</ThemedText>
-                <ThemedInput 
-                  value={name} 
-                  onChangeText={setName} 
-                  placeholder="Full name" 
-                  placeholderTextColor={theme.inputPlaceholder}
-                borderColor={theme.inputBorder}
-                />
+        <View style={{ marginTop: 24 }}>
+          <ThemedText style={s.fieldLabel}>Full name</ThemedText>
+          <ThemedInput 
+            value={name} 
+            onChangeText={setName} 
+            placeholder="Full name" 
+            placeholderTextColor={theme.inputPlaceholder}
+            borderColor={theme.inputBorder}
+          />
 
-                <ThemedText style={[s.fieldLabel, { marginTop: 12 }]}>Email</ThemedText>
-                <ThemedInput 
-                  value={email} 
-                  onChangeText={setEmail} 
-                  placeholder="Email" 
-                  placeholderTextColor={theme.inputPlaceholder}
-                borderColor={theme.inputBorder}
-                  keyboardType="email-address" 
-                />
-                
+          <ThemedText style={[s.fieldLabel, { marginTop: 12 }]}>Email</ThemedText>
+          <ThemedInput 
+            value={email} 
+            onChangeText={setEmail} 
+            placeholder="Email" 
+            keyboardType="email-address"
+            placeholderTextColor={theme.inputPlaceholder}
+            borderColor={theme.inputBorder} 
+          />
 
-                <ThemedText style={[s.fieldLabel, { marginTop: 12 }]}>Date of birth</ThemedText>
-                <ThemedInput 
-                  value={dob} 
-                  onChangeText={setDob} 
-                  placeholder="DD / MM / YYYY" 
-                  placeholderTextColor={theme.inputPlaceholder}
-                borderColor={theme.inputBorder}
-                />
+          <ThemedText style={[s.fieldLabel, { marginTop: 12 }]}>Date of birth</ThemedText>
+          <ThemedInput 
+            value={dob} 
+            onChangeText={setDob} 
+            placeholder="DD / MM / YYYY"
+            placeholderTextColor={theme.inputPlaceholder}
+            borderColor={theme.inputBorder} 
+          />
 
-                <ThemedText style={[s.fieldLabel, { marginTop: 12 }]}>Phone</ThemedText>
-                <ThemedInput 
-                  value={phone} 
-                  onChangeText={setPhone} 
-                  placeholder="+234 800 000 0000" 
-                  keyboardType="phone-pad"
-                  placeholderTextColor={theme.inputPlaceholder}
-                borderColor={theme.inputBorder}
-                />
-              </View>
+          <ThemedText style={[s.fieldLabel, { marginTop: 12 }]}>Phone</ThemedText>
+          <ThemedInput 
+            value={phone} 
+            onChangeText={setPhone} 
+            placeholder="+234 800 000 0000" 
+            keyboardType="phone-pad"
+            placeholderTextColor={theme.inputPlaceholder}
+            borderColor={theme.inputBorder}
+          />
+        </View>
 
-              <View style={{ marginTop: 32 }}>
-                <ThemedButton 
-                  title="Update Profile" 
-                  onPress={() => alert('Updated (stub)')} 
-                />
-              </View>
-            </ScrollView>
-          </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+        <View style={{ marginTop: 32 }}>
+          <ThemedButton 
+            title="Update Profile" 
+            onPress={() => alert('Updated (stub)')} 
+          />
+        </View>
+      </ScrollView>
     </View>
   );
 }

@@ -161,11 +161,15 @@ export const Colors = {
       office:  { bg: '#F5E9FF', icon: '#5A3EE7' }, // purple family
       personal:{ bg: '#E9F3FF', icon: '#3B82F6' }, // blue family
       study:   { bg: '#FFF1E5', icon: '#F59E0B' }, // orange family
+      health:  { bg: '#FFE4E4', icon: '#FF5252' }, // red family for health
+      default: { bg: '#EBEEEF', icon: '#8E8E93' }  // default fallback
     },
     dark: {
       office:  { bg: '#3a2f54', icon: '#bfa8ff' },
       personal:{ bg: '#25364a', icon: '#9AC2FF' },
       study:   { bg: '#4a3b2a', icon: '#FFB357' },
+      health:  { bg: '#4a2d2d', icon: '#FF8A8A' }, // red family for health
+      default: { bg: '#2C2C2E', icon: '#8E8E93' }  // default fallback
     }
   },
 

@@ -59,6 +59,7 @@ export default StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     elevation: 2,
   },
+  
 
   /* Labels + inputs */
   label: {

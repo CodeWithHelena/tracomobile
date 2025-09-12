@@ -40,18 +40,18 @@ export default function ChangePassword() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.background }}>
+    <View style={{ flex: 1, backgroundColor: theme.card }}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
         style={{ flex: 1 }}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={{ flex: 1 }}>
-            {/* Use the new header component */}
+            {/*Header component */}
             <PageHeader title="Change Password" />
             
             <ScrollView 
-              contentContainerStyle={[s.content, { paddingBottom: 40 }]}
+              contentContainerStyle={[s.contentCard, { paddingBottom: 40, paddingTop: 24, backgroundColor: theme.card }]}
               showsVerticalScrollIndicator={false}
             >
               <ThemedText style={[s.fieldLabel, { marginBottom: 8 }]}>
@@ -62,6 +62,8 @@ export default function ChangePassword() {
                 value={oldPass} 
                 onChangeText={setOldPass} 
                 secureTextEntry={!showOldPass}
+                placeholderTextColor={theme.inputPlaceholder}
+                borderColor={theme.inputBorder}
                 rightIcon={
                   <TouchableOpacity onPress={() => setShowOldPass(!showOldPass)}>
                     <ThemedText style={{ color: Colors.primary, fontWeight: '600' }}>
@@ -79,6 +81,8 @@ export default function ChangePassword() {
                 value={newPass} 
                 onChangeText={setNewPass} 
                 secureTextEntry={!showNewPass}
+                placeholderTextColor={theme.inputPlaceholder}
+                borderColor={theme.inputBorder}
                 rightIcon={
                   <TouchableOpacity onPress={() => setShowNewPass(!showNewPass)}>
                     <ThemedText style={{ color: Colors.primary, fontWeight: '600' }}>
@@ -96,6 +100,8 @@ export default function ChangePassword() {
                 value={confirm} 
                 onChangeText={setConfirm} 
                 secureTextEntry={!showConfirmPass}
+                placeholderTextColor={theme.inputPlaceholder}
+                borderColor={theme.inputBorder}
                 rightIcon={
                   <TouchableOpacity onPress={() => setShowConfirmPass(!showConfirmPass)}>
                     <ThemedText style={{ color: Colors.primary, fontWeight: '600' }}>
@@ -109,7 +115,6 @@ export default function ChangePassword() {
                 <ThemedButton 
                   title="Save Changes" 
                   onPress={onSave}
-                  disabled={!oldPass || !newPass || !confirm}
                 />
               </View>
 

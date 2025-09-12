@@ -12,6 +12,20 @@ export default StyleSheet.create({
   flexGrow: 1,
   paddingTop: 20, // Adjust this based on your header height
 },
+contentCard: {
+    marginTop: 40,
+    marginHorizontal: 14,
+    paddingVertical: 20,
+    paddingTop:0,
+    paddingHorizontal: 20,
+    borderRadius: 14,
+    // subtle card shadow
+    shadowColor: '#000',
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 2,
+  },
   topLeft: { marginTop: 8, marginBottom: 6 },
   profileTitle: { fontSize: 22, fontWeight: '800' },
 
@@ -28,7 +42,7 @@ export default StyleSheet.create({
     marginTop: 30,
     backgroundColor: '#fff',
     shadowColor: '#000',
-    
+    shadowOpacity: 0.04,
     shadowOffset: { width: 0, height: 6 },
     shadowRadius: 12,
     elevation: 2,
