@@ -182,6 +182,60 @@ export default StyleSheet.create({
   },
   viewBtnMiniText: { color: '#5A3EE7', fontWeight: '700', fontSize: 11 },
 
+
+
+// task card w/ timeline - UPDATED
+  cardWrap: {
+    flexDirection: 'row',
+    marginBottom: 12,
+    paddingLeft: 8, // Add left padding for timeline space
+  },
+  
+  // NEW Timeline container
+  timelineContainer: {
+    width: 20, // Fixed width for timeline area
+    alignItems: 'center',
+    marginRight: 8,
+  },
+  
+  // NEW Timeline stripe - vertical line
+  timelineStripe: {
+    width: 3, // Thinner stripe like in the image
+    height: '100%', // Full height of the card
+    borderRadius: 1.5, // Rounded ends
+    position: 'absolute',
+    top: 0,
+  },
+  
+  // NEW Timeline dot - circle at top
+  timelineDot: {
+    width: 12, // Larger dot like in the image
+    height: 12,
+    borderRadius: 7, // Perfect circle
+    borderWidth: 2,
+    borderColor: '#fff', // White border around dot
+    marginTop: 0, // Position from top of card
+    zIndex: 1, // Ensure dot appears above stripe
+  },
+  timelineDotWrap: {
+ borderRadius: 8, 
+  },
+
+  // Card - adjust to account for new timeline layout
+  card: {
+    flex: 1,
+    borderRadius: 16,
+    padding: 12,
+    borderWidth: 1,
+    shadowOpacity: 0.06,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 2,
+    marginLeft: 0, // Remove any left margin since timeline is separate
+  },
+
+
+
   // calendar modal
   modalOverlay: {
     flex: 1,

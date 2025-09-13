@@ -44,7 +44,7 @@ export default function TodayScreen() {
   const tasks = [
     { id:'1', title:'Market Research', subtitle:'Grocery shopping app design', time:'10:00 AM', category:'office',   status:'completed' },
     { id:'2', title:'Competitive Analysis', subtitle:'Grocery shopping app design', time:'12:00 PM', category:'personal', status:'inProgress' },
-    { id:'3', title:'Create Low-fidelity Wireframe', subtitle:'Uber Eats redesign challenge', time:'07:00 PM', category:'study', status:'todo' },
+    { id:'3', title:'Create Low-fidelity Wireframe', subtitle:'Low-fidelity wireframes are simple, early-stage representations of a website or apps layout and user flow. They are typically created using basic shapes and lines to indicate the position and hierarchy of elements on a page, without adding much detail or design elements.', time:'07:00 PM', category:'study', status:'todo' },
     { id:'4', title:'How to pitch a Design Sprint', subtitle:'About design sprint', time:'09:30 PM', category:'study', status:'todo' },
     { id:'5', title:'Sprint Planning', subtitle:'Office mobile revamp', time:'11:00 AM', category:'office', status:'inProgress' },
   ];
@@ -110,6 +110,7 @@ export default function TodayScreen() {
             showsVerticalScrollIndicator={false}
           >
             <Text style={[s.listTitle, { color: theme.title }]}>Task List</Text>
+            
 
             {filtered.map(t => (
               <TaskCard
